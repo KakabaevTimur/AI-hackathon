@@ -1,3 +1,4 @@
+import argparse
 import sys
 import words
 from fuzzywuzzy import fuzz
@@ -27,11 +28,15 @@ def measure(text, keywords_counts):
         
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("educ_prog", help="Path to file representing educational program", type=str)
+    parser.add_argument("skills", help="Path to file representing expected finisher skills", type=str)
+    args = parser.parse_args()
     # if len(sys.argv()) != 4:
     #     exit(1)
-    text = getTextFrom(sys.argv[1])
+    text = getTextFrom(args.educ_prog)
     print("Preparing data")
-    abilities_path = sys.argv[2] # ./Taxonomii_na_osnove_analiza_rynka_truda.xlsx
+    abilities_path = args.skills  # ./Taxonomii_na_osnove_analiza_rynka_truda.xlsx
     keywords_counts = getCounts(abilities_path, FUZZING_THRESHOLD)
     val = measure(text, keywords_counts)
     print("Score is:", val)
